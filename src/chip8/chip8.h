@@ -15,13 +15,19 @@
 #include <stdint.h>
 
 #define MEMORY_SIZE 4096
+
 #define FONT_START_LOCATION 0x050
 #define FONT_END_LOCATION 0x09F
+
 #define PROGRAM_START_LOCATION 0x200
 #define PROGRAM_END_LOCATION 0xE8F
 
+#define SCREEN_WIDTH 64
+#define SCREEN_HEIGHT 32
+
 struct chip8 {
     uint8_t RAM[MEMORY_SIZE];
+    uint8_t screen[SCREEN_WIDTH][SCREEN_HEIGHT];
 };
 
 struct chip8 *chip8_init();

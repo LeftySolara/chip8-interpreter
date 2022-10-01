@@ -21,6 +21,11 @@ struct chip8 *chip8_init()
     struct chip8 *chip8 = malloc(sizeof(*chip8));
     memset(chip8->RAM, 0, MEMORY_SIZE);
 
+    /* Initialize the screen. */
+    for (int i = 0; i < SCREEN_WIDTH; ++i) {
+        memset(chip8->screen[i], 0, SCREEN_HEIGHT);
+    }
+
     /* Load the built-in font. */
     uint8_t sprites[] = {
         0xF0, 0x90, 0x90, 0x90, 0xF0,  // 0
