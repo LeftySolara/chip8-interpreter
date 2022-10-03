@@ -18,6 +18,7 @@
 
 struct chip8 *chip8_init()
 {
+    /* Initialize memory. */
     struct chip8 *chip8 = malloc(sizeof(*chip8));
     memset(chip8->RAM, 0, MEMORY_SIZE);
 
@@ -49,6 +50,9 @@ struct chip8 *chip8_init()
     for (int i = 0; i < FONT_END_LOCATION - FONT_START_LOCATION; ++i) {
         chip8->RAM[FONT_START_LOCATION + i] = sprites[i];
     }
+
+    /* Set the program counter. */
+    chip8->PC = (uint8_t)PROGRAM_START_LOCATION;
 
     return chip8;
 }

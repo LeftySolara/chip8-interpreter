@@ -28,6 +28,8 @@
 struct chip8 {
     uint8_t RAM[MEMORY_SIZE];
     uint8_t screen[SCREEN_WIDTH][SCREEN_HEIGHT];
+
+    uint8_t PC; /** Program Counter */
 };
 
 struct chip8 *chip8_init();
