@@ -28,6 +28,9 @@
 #define SCREEN_WIDTH 64
 #define SCREEN_HEIGHT 32
 
+/** General-purpose registers. */
+enum gp_register { V0, V1, V2, V3, V4, V5, V6, V7, V8, V9, VA, VB, VC, VD, VE, VF, REGISTER_COUNT };
+
 struct chip8 {
     uint8_t screen[SCREEN_WIDTH][SCREEN_HEIGHT];
 
@@ -36,6 +39,7 @@ struct chip8 {
 
     uint8_t PC; /** Program Counter */
     uint16_t index_register;
+    uint8_t gp_registers[REGISTER_COUNT];
 
     uint8_t delay_timer;
     uint8_t sound_timer;

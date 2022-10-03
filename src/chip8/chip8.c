@@ -59,6 +59,7 @@ struct chip8 *chip8_init()
 
     /* Set registers. */
     chip8->index_register = 0;
+    memset(chip8->gp_registers, 0, REGISTER_COUNT);
 
     /* Set timers. */
     chip8->delay_timer = 0;
