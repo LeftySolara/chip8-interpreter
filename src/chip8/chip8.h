@@ -36,6 +36,9 @@ struct chip8 {
 
     uint8_t PC; /** Program Counter */
     uint16_t index_register;
+
+    uint8_t delay_timer;
+    uint8_t sound_timer;
 };
 
 struct chip8 *chip8_init();

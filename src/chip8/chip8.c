@@ -60,6 +60,10 @@ struct chip8 *chip8_init()
     /* Set registers. */
     chip8->index_register = 0;
 
+    /* Set timers. */
+    chip8->delay_timer = 0;
+    chip8->sound_timer = 0;
+
     return chip8;
 }
 
