@@ -30,6 +30,7 @@ struct chip8 {
     uint8_t screen[SCREEN_WIDTH][SCREEN_HEIGHT];
 
     uint8_t PC; /** Program Counter */
+    uint16_t index_register;
 };
 
 struct chip8 *chip8_init();

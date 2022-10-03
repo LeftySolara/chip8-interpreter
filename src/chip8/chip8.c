@@ -54,6 +54,9 @@ struct chip8 *chip8_init()
     /* Set the program counter. */
     chip8->PC = (uint8_t)PROGRAM_START_LOCATION;
 
+    /* Set registers. */
+    chip8->index_register = 0;
+
     return chip8;
 }
 
