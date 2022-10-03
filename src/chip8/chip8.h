@@ -14,7 +14,10 @@
 
 #include <stdint.h>
 
+#include "stack/stack.h"
+
 #define MEMORY_SIZE 4096
+#define STACK_SIZE 16
 
 #define FONT_START_LOCATION 0x050
 #define FONT_END_LOCATION 0x09F
@@ -26,8 +29,10 @@
 #define SCREEN_HEIGHT 32
 
 struct chip8 {
-    uint8_t RAM[MEMORY_SIZE];
     uint8_t screen[SCREEN_WIDTH][SCREEN_HEIGHT];
+
+    uint8_t RAM[MEMORY_SIZE];
+    struct stack *stack;
 
     uint8_t PC; /** Program Counter */
     uint16_t index_register;

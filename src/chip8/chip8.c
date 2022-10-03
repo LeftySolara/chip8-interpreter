@@ -22,6 +22,9 @@ struct chip8 *chip8_init()
     struct chip8 *chip8 = malloc(sizeof(*chip8));
     memset(chip8->RAM, 0, MEMORY_SIZE);
 
+    /* Initialize the stack. */
+    chip8->stack = stack_init(STACK_SIZE);
+
     /* Initialize the screen. */
     for (int i = 0; i < SCREEN_WIDTH; ++i) {
         memset(chip8->screen[i], 0, SCREEN_HEIGHT);
@@ -62,6 +65,7 @@ struct chip8 *chip8_init()
 
 void chip8_free(struct chip8 *chip8)
 {
+    stack_free(chip8->stack);
     free(chip8);
 }
 
