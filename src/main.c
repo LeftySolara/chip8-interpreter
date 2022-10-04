@@ -1,11 +1,15 @@
 #include "chip8/chip8.h"
+#include "stdio.h"
 
 int main(int argc, char **argv)
 {
     struct chip8 *chip8 = chip8_init();
 
     chip8_load_program(chip8, argv[1]);
-    chip8_print_memory(chip8);
+
+    for (int i = PROGRAM_START_LOCATION; i < PROGRAM_END_LOCATION; i = i + 2) {
+        printf("%04x\n", chip8_fetch_instruction(chip8));
+    }
 
     chip8_free(chip8);
 

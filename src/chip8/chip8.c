@@ -55,7 +55,7 @@ struct chip8 *chip8_init()
     }
 
     /* Set the program counter. */
-    chip8->PC = (uint8_t)PROGRAM_START_LOCATION;
+    chip8->PC = PROGRAM_START_LOCATION;
 
     /* Set registers. */
     chip8->index_register = 0;
@@ -100,4 +100,22 @@ void chip8_load_program(struct chip8 *chip8, const char *path)
     }
 
     fclose(fp);
+}
+
+/**
+ * @brief Fetch the next instruction from memory.
+ *
+ * @param chip8 The chip8 interpreter instance to pull from.
+ *
+ * @return uint16_t The two-byte instruction pointed to by the program counter.
+ */
+uint16_t chip8_fetch_instruction(struct chip8 *chip8)
+{
+    uint8_t high_byte = chip8->RAM[chip8->PC];
+    uint8_t low_byte = chip8->RAM[chip8->PC + 1];
+
+    uint16_t opcode = (high_byte << 8) | low_byte;
+
+    chip8->PC = chip8->PC + 2;
+    return opcode;
 }

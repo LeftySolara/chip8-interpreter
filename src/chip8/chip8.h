@@ -37,7 +37,7 @@ struct chip8 {
     uint8_t RAM[MEMORY_SIZE];
     struct stack *stack;
 
-    uint8_t PC; /** Program Counter */
+    unsigned int PC; /** Program Counter */
     uint16_t index_register;
     uint8_t gp_registers[REGISTER_COUNT];
 
@@ -51,5 +51,8 @@ void chip8_free(struct chip8 *chip8);
 void chip8_print_memory(struct chip8 *chip8);
 
 void chip8_load_program(struct chip8 *chip8, const char *path);
+
+/** Fetch the next instruction from memory. */
+uint16_t chip8_fetch_instruction(struct chip8 *chip8);
 
 #endif /* CHIP8_H */
