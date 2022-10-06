@@ -55,4 +55,7 @@ void chip8_load_program(struct chip8 *chip8, const char *path);
 /** Fetch the next instruction from memory. */
 uint16_t chip8_fetch_instruction(struct chip8 *chip8);
 
+/** Execute the given instruction. */
+void chip8_execute_instruction(uint16_t instruction);
+
 #endif /* CHIP8_H */

@@ -9,12 +9,14 @@
  *
  */
 
+#include "chip8.h"
+
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
 #include "../utils/utils.h"
-#include "chip8.h"
 
 struct chip8 *chip8_init()
 {
@@ -118,4 +120,33 @@ uint16_t chip8_fetch_instruction(struct chip8 *chip8)
 
     chip8->PC = chip8->PC + 2;
     return opcode;
+}
+
+/**
+ * @brief Execute the given instruction.
+ *
+ * List of instructions:
+ * 00E0: clears the screen
+ *
+ * @param instruction The instruction to execute.
+ */
+void chip8_execute_instruction(uint16_t instruction)
+{
+    uint16_t n1 = instruction >> 12;          /* First nibble */
+    uint16_t n2 = (instruction >> 8) & 0x0F;  /* Second nibble. */
+    uint16_t n3 = (instruction >> 4) & 0x00F; /* Third nibble. */
+    uint16_t n4 = instruction & 0x000F;       /* Fourth nibble. */
+    uint16_t NN = instruction & 0x00FF;       /* Second byte. */
+    uint16_t NNN = instruction & 0x0FFF;      /* Second, third, and fourth nibbles. */
+
+    switch (n1) {
+        case 0:
+            switch (NNN) {
+                case 0x0E0: /* 00E0 */
+                    break;
+            }
+            break;
+        default:
+            break;
+    }
 }
