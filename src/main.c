@@ -34,6 +34,7 @@ int main(int argc, char **argv)
                 }
             }
         }
+        ui_draw(ui, chip8->screen);
     }
 
     ui_free(ui);
