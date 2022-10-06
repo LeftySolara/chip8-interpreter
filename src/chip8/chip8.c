@@ -9,14 +9,13 @@
  *
  */
 
-#include "chip8.h"
-
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
 #include "../utils/utils.h"
+#include "chip8.h"
 
 struct chip8 *chip8_init()
 {
@@ -130,7 +129,7 @@ uint16_t chip8_fetch_instruction(struct chip8 *chip8)
  *
  * @param instruction The instruction to execute.
  */
-void chip8_execute_instruction(uint16_t instruction)
+void chip8_execute_instruction(struct chip8 *chip8, uint16_t instruction)
 {
     uint16_t n1 = instruction >> 12;          /* First nibble */
     uint16_t n2 = (instruction >> 8) & 0x0F;  /* Second nibble. */
@@ -143,6 +142,7 @@ void chip8_execute_instruction(uint16_t instruction)
         case 0:
             switch (NNN) {
                 case 0x0E0: /* 00E0 */
+                    memset(chip8->screen, 0, SCREEN_WIDTH * SCREEN_HEIGHT);
                     break;
             }
             break;

@@ -56,6 +56,6 @@ void chip8_load_program(struct chip8 *chip8, const char *path);
 uint16_t chip8_fetch_instruction(struct chip8 *chip8);
 
 /** Execute the given instruction. */
-void chip8_execute_instruction(uint16_t instruction);
+void chip8_execute_instruction(struct chip8 *chip8, uint16_t instruction);
 
 #endif /* CHIP8_H */
