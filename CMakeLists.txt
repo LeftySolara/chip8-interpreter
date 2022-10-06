@@ -22,3 +22,10 @@ file(GLOB_RECURSE SOURCE_FILES "src/*.c")
 add_executable(chip8-interpreter ${SOURCE_FILES})
 
 set_target_properties(chip8-interpreter PROPERTIES OUTPUT_NAME "chip8")
+
+
+# Load SDL2 libraries
+include(FindPkgConfig)
+pkg_search_module(SDL2 REQUIRED sdl2)
+include_directories(${SDL2_INCLUDE_DIRS})
+target_link_libraries(chip8-interpreter ${SDL2_LIBRARIES})
