@@ -9,11 +9,15 @@
  *
  */
 
+#include "chip8.h"
+
 #include <stdint.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-#include "chip8.h"
+#define FONT_START_LOCATION 0x050
+#define FONT_END_LOCATION 0x09F
 
 uint8_t font_sprites[] = {
     0xF0, 0x90, 0x90, 0x90, 0xF0, /* 0 */
@@ -57,8 +61,8 @@ struct chip8 *chip8_init()
     chip8->sound_timer = 0;
 
     /* Load font */
-    for (int i = 0; i < 80; ++i) {
-        chip8->RAM[i] = font_sprites[i];
+    for (int i = FONT_START_LOCATION; i <= FONT_END_LOCATION; ++i) {
+        chip8->RAM[i] = font_sprites[i - FONT_START_LOCATION];
     }
 
     return chip8;
@@ -67,4 +71,12 @@ struct chip8 *chip8_init()
 void chip8_free(struct chip8 *chip8)
 {
     free(chip8);
+}
+
+void print_memory(struct chip8 *chip)
+{
+    for (int i = 0; i < MEMORY_SIZE; ++i) {
+        printf("%02x ", chip->RAM[i]);
+    }
+    printf("\n");
 }
