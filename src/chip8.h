@@ -81,6 +81,9 @@ struct chip8 *chip8_init();
 /** Free memory used by a chip8 structure. */
 void chip8_free(struct chip8 *chip8);
 
+/** Load a CHIP-8 program into an interpreter. */
+int chip8_load_program(struct chip8 *chip8, const char *path);
+
 void print_memory(struct chip8 *chip);
 
 #endif /* CHIP8_H */
