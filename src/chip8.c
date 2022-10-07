@@ -53,7 +53,7 @@ struct chip8 *chip8_init()
     memset(chip8->RAM, 0, MEMORY_SIZE);
     memset(chip8->stack, 0, STACK_SIZE * 2);
     for (int i = 0; i < SCREEN_WIDTH; ++i) {
-        memset(chip8->screen, 0, SCREEN_HEIGHT);
+        memset(chip8->screen[i], 0, SCREEN_HEIGHT);
     }
 
     chip8->pc = 0x200;
