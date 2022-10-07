@@ -121,6 +121,96 @@ int chip8_load_program(struct chip8 *chip8, const char *path)
     return 1;
 }
 
+/**
+ * @brief Fetch the next opcode in memory.
+ *
+ * @param chip8 The CHIP-8 interpreter to fetch from.
+ *
+ * @return struct opcode* The 16-bit opcode for the instruction.
+ *
+ * This function fetches the next CHIP-8 opcode in memory. The return value
+ * is a struct containing the full, 16-bit opcode along with convienence variables
+ * representing each nibble of the opcode. Space for this struct is allocated
+ * as if malloc() was called, and thus it must be passed to free() to avoid
+ * a memory leak.
+ */
+struct opcode *chip8_fetch_opcode(struct chip8 *chip8)
+{
+    uint8_t high_byte = chip8->RAM[chip8->pc];
+    uint8_t low_byte = chip8->RAM[chip8->pc + 1];
+
+    struct opcode *opcode = malloc(sizeof(*opcode));
+    opcode->code = (high_byte << 8) | low_byte;
+
+    opcode->n1 = opcode->code >> 12;
+    opcode->n2 = (opcode->code >> 8) & 0x0F;
+    opcode->n3 = (opcode->code >> 4) & 0x00F;
+    opcode->n4 = opcode->code & 0x000F;
+
+    opcode->NN = opcode->code & 0x00FF;
+    opcode->NNN = opcode->code & 0x0FFF;
+
+    chip8->pc += 2;
+    return opcode;
+}
+
+/**
+ * @brief Run one cycle of the fetch, decode, execute loop.
+ *
+ * @param chip8 The CHIP-8 interpreter to run.
+ */
+void chip8_cycle(struct chip8 *chip8)
+{
+    /* Fetch the next opcode in memory.
+     *
+     * List of opcodes:
+     * 0NNN: Calls program at address NNN. Not necessary for most ROMs
+     * 00E0: Clears the screen
+     * 00EE: Returns from a subroutine
+     * 1NNN: Jumps to address NNN
+     * 2NNN: Calls subreoutine at address NNN
+     * 3XNN: Skips the next instruction if VX equals NN
+     * 4XNN: Skips the next instruction if VX is not equal to NN
+     * 5XY0: Skips the next instruction if VX equals VY
+     * 6XNN: Sets the value of register VX to NN
+     * 7XNN: Adds NN to VX (carry flag not changed)
+     * 8XY0: Sets VX to the vaule of VY
+     * 8XY1: Sets VX to VX OR VY
+     * 8XY2: Sets VX to VX AND VY
+     * 8XY3: Sets VX to VX XOR VY
+     * 8XY4: Sets VX to VX + VY with VF = carry
+     * 8XY5: Sets Vx to VX - VY with VF = NOT borrow
+     * 8XY6: Sets VX to VX SHR 1
+     * 8XY7: Sets VX = VY - VX with VF = NOT borrow
+     * 8XYE: Sets VX = SHL 1
+     * 9XY0: Skips the next instruction if VX is not equal to VY
+     * ANNN: Sets register I to NNN
+     * BNNN: Jumps to address NNN + V0
+     * CXNN: Sets VX to the result of a bitwise AND on a random number and NN
+     * DXYN: Draws an N-byte sprites starting at memory location I at (VX, VY), set VF = collision
+     * EX9E: Skips the next instruction if the key stored in VX is pressed
+     * EXA1: Skips the next instruction if the key stored in VX is not pressed
+     * FX07: Sets VX to the value of the delay timer
+     * FX0A: A key press is awaited, and then stored in VX (blocking operation)
+     * FX15: Sets the delay timer to VX
+     * FX18: Sets the sound timer to VX
+     * FX1E: Adds VX to I
+     * FX29: Sets I to the location of the sprite for the character in VX
+     * FX33: Stores the BCD of VX starting at memory location I
+     * FX55: Stores V0 to VX (including VX) in memory starting at address I
+     * FX65: Fills V0 to VX (including VX) with values from memory starting at address I
+     */
+    struct opcode *opcode = chip8_fetch_opcode(chip8);
+
+    /* Decode the curent opcode. */
+    ;
+
+    /* Execute the opcode instruction. */
+    ;
+
+    free(opcode);
+}
+
 void print_memory(struct chip8 *chip)
 {
     for (int i = 0; i < MEMORY_SIZE; ++i) {

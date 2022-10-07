@@ -8,6 +8,8 @@ int main(int argc, char **argv)
         return 1;
     }
 
+    chip8_cycle(chip8);
+
     print_memory(chip8);
 
     chip8_free(chip8);

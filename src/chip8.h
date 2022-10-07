@@ -76,6 +76,18 @@ struct chip8 {
     uint16_t opcode;
 };
 
+struct opcode {
+    uint16_t code; /** The full 16-bit opcode */
+
+    uint16_t n1; /** The first nibble */
+    uint16_t n2; /** The second nibble */
+    uint16_t n3; /** The third nibble */
+    uint16_t n4; /** The fourth nibble */
+
+    uint16_t NN;  /** The second byte */
+    uint16_t NNN; /** The second, third, and fourth nibble */
+};
+
 /** Initialize a chip8 structure. */
 struct chip8 *chip8_init();
 /** Free memory used by a chip8 structure. */
@@ -83,6 +95,12 @@ void chip8_free(struct chip8 *chip8);
 
 /** Load a CHIP-8 program into an interpreter. */
 int chip8_load_program(struct chip8 *chip8, const char *path);
+
+/** Fetch the next opcode in memory. */
+struct opcode *chip8_fetch_opcode(struct chip8 *chip8);
+
+/** Run one cycle of the fetch, decode, excute loop. */
+void chip8_cycle(struct chip8 *chip8);
 
 void print_memory(struct chip8 *chip);
 
