@@ -23,6 +23,10 @@
 #define PROGRAM_START_LOCATION 0x200
 #define PROGRAM_END_LOCATION 0xE8F
 
+#define VX chip8->V[opcode->n2]
+#define VY chip8->V[opcode->n3]
+#define CURRENT_PIXEL chip8->screen[VX % 64][VY % 32]
+
 uint8_t font_sprites[] = {
     0xF0, 0x90, 0x90, 0x90, 0xF0, /* 0 */
     0x20, 0x60, 0x20, 0x20, 0x70, /* 1 */
@@ -201,13 +205,56 @@ void chip8_cycle(struct chip8 *chip8)
      * FX65: Fills V0 to VX (including VX) with values from memory starting at address I
      */
     struct opcode *opcode = chip8_fetch_opcode(chip8);
+    uint16_t x;
+    uint16_t y;
+    uint8_t sprite;
 
-    /* Decode the curent opcode. */
-    ;
+    /* Decode and execute the curent opcode. */
+    switch (opcode->n1) {
+        case 0x0:
+            switch (opcode->NNN) {
+                case 0x0E0: /* 00E0 */
+                    memset(chip8->screen, 0, SCREEN_WIDTH * SCREEN_HEIGHT);
+                    break;
+                default:
+                    break;
+            }
+            break;
+        case 0x1: /* 1NNN */
+            chip8->pc = opcode->NNN;
+            break;
+        case 0x6: /* 6XNN */
+            VX = opcode->NN;
+            break;
+        case 0x7: /* 7XNN */
+            VX += opcode->NN;
+            break;
+        case 0xA: /* ANNN */
+            chip8->I = opcode->NNN;
+            break;
+        case 0xD: /* DXYN */
+            x = VX % SCREEN_WIDTH;
+            y = VY % SCREEN_HEIGHT;
+            chip8->V[0xF] = 0;
+            for (int i = 0; i < opcode->n4; ++i) {
+                sprite = chip8->RAM[chip8->I + i];
+                for (int j = 0; j < 8; ++j) {
+                    if (((sprite & 0x01) << j) > 0 && chip8->screen[x][y] > 0) {
+                        chip8->screen[x][y] = 0;
+                        chip8->V[15] = 1;
+                    }
+                    else if (((sprite & 0x01) << j) > 0 && chip8->screen[x][y] == 0) {
+                        chip8->screen[x][y] = 1;
+                    }
+                    ++x;
+                }
+                ++y;
+            }
 
-    /* Execute the opcode instruction. */
-    ;
-
+            break;
+        default:
+            break;
+    }
     free(opcode);
 }
 
